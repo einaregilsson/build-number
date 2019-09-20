@@ -111,8 +111,10 @@ function main() {
             }
 
             console.log(`Successfully updated build number to ${nextBuildNumber}`);
-            //Setting the output to new build number...
+            
+            //Setting the output and a environment variable to new build number...
             console.log(`::set-env name=BUILD_NUMBER::${nextBuildNumber}`);
+            console.log(`::set-output name=build_number::${nextBuildNumber}`);
             
             //Cleanup
             if (nrTags) {

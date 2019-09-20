@@ -4,6 +4,10 @@ author: 'Einar Egilsson'
 runs:
   using: 'node12'
   main: 'main.js'
+outputs:
+  build_number:
+    description: 'Generated build number'
+  
 branding:
   icon: 'hash'  
   color: 'green'
