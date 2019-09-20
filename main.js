@@ -4,7 +4,7 @@ const   https = require('https'),
         env = process.env;
 
 function fail(message, exitCode=1) {
-    console.log(`::error::${message}`');
+    console.log(`::error::${message}`);
     process.exit(1);
 }
 
