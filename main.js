@@ -9,9 +9,12 @@ function fail(message, exitCode=1) {
 }
 
 
+console.error('JUST AN ERROR');
+console.log('::error::ACTION ERROR');
+
 for (let k in env) {
-        console.log(k + ' : + env[k]);
-                    }
+        console.log(k + ' : ' + env[k]);
+}
 function request(method, path, data, callback) {
     
     try {
