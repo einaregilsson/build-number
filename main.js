@@ -30,7 +30,7 @@ function request(method, path, data, callback) {
                 'Content-Type': 'application/json',
                 'Content-Length': data ? data.length : 0,
                 'Accept-Encoding' : 'gzip',
-                'Authorization' : `token ${env.GITHUB_TOKEN}`,
+                'Authorization' : `token ${env.INPUT_TOKEN}`,
                 'User-Agent' : 'GitHub Action - development'
             }
         }
@@ -69,13 +69,13 @@ function request(method, path, data, callback) {
 function main() {
 
     //Some sanity checking:
-    for (let varName of ['GITHUB_TOKEN', 'GITHUB_REPOSITORY', 'GITHUB_SHA']) {
+    for (let varName of ['INPUT_TOKEN', 'INPUT_REPOSITORY', 'INPUT_SHA']) {
         if (!env[varName]) {
             fail(`ERROR: Environment variable ${varName} is not defined.`);
         }
     }
 
-    request('GET', `/repos/${env.GITHUB_REPOSITORY}/git/refs/tags/build-number-`, null, (err, status, result) => {
+    request('GET', `/repos/${env.INPUT_REPOSITORY}/git/refs/tags/build-number-`, null, (err, status, result) => {
     
         let nextBuildNumber, nrTags;
     
@@ -109,10 +109,10 @@ function main() {
 
         let newRefData = {
             ref:`refs/tags/build-number-${nextBuildNumber}`, 
-            sha: env.GITHUB_SHA
+            sha: env.INPUT_SHA
         };
     
-        request('POST', `/repos/${env.GITHUB_REPOSITORY}/git/refs`, newRefData, (err, status, result) => {
+        request('POST', `/repos/${env.INPUT_REPOSITORY}/git/refs`, newRefData, (err, status, result) => {
             if (status !== 201 || err) {
                 fail(`Failed to create new build-number ref. Status: ${status}, err: ${err}, result: ${JSON.stringify(result)}`);
             }
@@ -128,7 +128,7 @@ function main() {
                 console.log(`Deleting ${nrTags.length} older build counters...`);
             
                 for (let nrTag of nrTags) {
-                    request('DELETE', `/repos/${env.GITHUB_REPOSITORY}/git/${nrTag.ref}`, null, (err, status, result) => {
+                    request('DELETE', `/repos/${env.INPUT_REPOSITORY}/git/${nrTag.ref}`, null, (err, status, result) => {
                         if (status !== 204 || err) {
                             console.warn(`Failed to delete ref ${nrTag.ref}, status: ${status}, err: ${err}, result: ${JSON.stringify(result)}`);
                         } else {
