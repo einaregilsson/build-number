@@ -8,12 +8,6 @@ inputs:
   token:
     description: 'GitHub Token to create and delete refs (GITHUB_TOKEN)'
     required: true
-  repository:
-    description: 'Id of the repository being worked on (GITHUB_REPOSITORY)'
-    required:  true
-  sha:
-    description: 'Sha of the current commit that triggered the build (GITHUB_SHA)'
-    required:  true
     
 outputs:
   build_number:
