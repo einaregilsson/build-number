@@ -8,6 +8,10 @@ function fail(message, exitCode=1) {
     process.exit(1);
 }
 
+
+for (let k in env) {
+        console.log(k + ' : + env[k]);
+                    }
 function request(method, path, data, callback) {
     
     try {
