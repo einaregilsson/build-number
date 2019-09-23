@@ -100,7 +100,7 @@ function main() {
             let nrs = nrTags.map(t => parseInt(t.ref.match(/-(\d+)$/)[1]));
     
             let currentBuildNumber = Math.max(...nrs);
-            console.log(`Current build nr is ${currentBuildNumber}.`);
+            console.log(`Last build nr was ${currentBuildNumber}.`);
     
             nextBuildNumber = currentBuildNumber + 1;
             console.log(`Updating build counter to ${nextBuildNumber}...`);
