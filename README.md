@@ -50,9 +50,9 @@ jobs:
         token: ${{secrets.github_token}}        
     - name: Upload build number
       uses: actions/upload-artifact@v1
-        with:
-          name: BUILD_NUMBER
-          path: BUILD_NUMBER
+      with:
+        name: BUILD_NUMBER
+        path: BUILD_NUMBER
           
   job2:
     runs-on: ubuntu-latest
@@ -66,7 +66,8 @@ jobs:
       uses: einaregilsson/build-number@v1 
     
     # Don't need to add Github token here, since you're only getting an artifact.
-    # After this runs you'll again have the $BUILD_NUMBER environment variable, and the ${{ steps.buildnumber.outputs.build_number }} output.
+    # After this runs you'll again have the $BUILD_NUMBER environment variable, and 
+    # the ${{ steps.buildnumber.outputs.build_number }} output.
 ```
 
 
@@ -80,6 +81,10 @@ git push origin build-number-500
 ```
 
 and then your next build number will be 501. The action will always delete older refs that start with ```build-number-```, e.g. when it runs and finds ```build-number-500``` it will create a new tag, ```build-number-501``` and then delete ```build-number-500```.
+
+## Branches and build numbers
+
+The build number generator is global, there's no concept of special build numbers for special branches, it's probably something you would just use on build on your master branch. It's just one number that gets increased every time the action is run.
 
 So, that's it. Hope you can use it 🙂
 
