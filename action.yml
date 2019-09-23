@@ -7,7 +7,7 @@ runs:
 inputs:
   token:
     description: 'GitHub Token to create and delete refs (GITHUB_TOKEN)'
-    required: true
+    required: false # Not required when getting the stored build number for later jobs, only in the first jobs when it's generated
     
 outputs:
   build_number:

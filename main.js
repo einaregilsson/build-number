@@ -1,18 +1,12 @@
 //Trying to avoid any npm installs or anything that takes extra time...
 const   https = require('https'),
         zlib = require('zlib'),
+        fs = require('fs'),
         env = process.env;
 
 function fail(message, exitCode=1) {
     console.log(`::error::${message}`);
     process.exit(1);
-}
-
-
-console.error('JUST AN ERROR');
-
-for (let k in env) {
-        console.log(k + ' : ' + env[k]);
 }
 
 function request(method, path, data, callback) {
@@ -68,6 +62,17 @@ function request(method, path, data, callback) {
 
 function main() {
 
+    const path = 'BUILD_NUMBER/BUILD_NUMBER';
+    //See if we've already generated the build number and are in later steps...
+    if (fs.existsSync(path)) {
+        let buildNumber = fs.readFileSync(path);
+        console.log(`Build number already generated in earlier jobs, using build number ${buildNumber}...`);
+        //Setting the output and a environment variable to new build number...
+        console.log(`::set-env name=BUILD_NUMBER::${buildNumber}`);
+        console.log(`::set-output name=build_number::${buildNumber}`);
+        return;
+    }
+    
     //Some sanity checking:
     for (let varName of ['INPUT_TOKEN', 'GITHUB_REPOSITORY', 'GITHUB_SHA']) {
         if (!env[varName]) {
