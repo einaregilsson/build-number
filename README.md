@@ -86,5 +86,5 @@ and then your next build number will be 501. The action will always delete older
 
 The build number generator is global, there's no concept of special build numbers for special branches, it's probably something you would just use on builds from your master branch. It's just one number that gets increased every time the action is run.
 
-So, that's it. Hope you can use it 🙂
+So, that's it. Hope you can use it. You can read more about how it works in this blog post: http://einaregilsson.com/a-github-action-for-generating-sequential-build-numbers/
 
