@@ -33,6 +33,7 @@ jobs:
       with:
         who-to-greet: ${{ steps.buildnumber.outputs.build_number }}
 ```
+The `GITHUB_TOKEN` environment variable is defined by GitHub already for you. See [virtual environments for GitHub actions](https://help.github.com/en/articles/virtual-environments-for-github-actions#github_token-secret) for more information.
 
 ## Getting the build number in other jobs
 
