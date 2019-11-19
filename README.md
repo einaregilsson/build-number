@@ -7,6 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Generate build number
+      id: buildnumber
       uses: einaregilsson/build-number@v1 
       with:
         token: ${{secrets.github_token}}        
