@@ -7,12 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Generate build number
-      id: buildnumber
       uses: einaregilsson/build-number@v1 
       with:
         token: ${{secrets.github_token}}        
     - name: Print new build number
-      run: echo "Build number is ${{ steps.buildnumber.outputs.build_number }}"
+      run: echo "Build number is $BUILD_NUMBER"
+      # Or, if you're on Windows: echo "Build number is ${env:BUILD_NUMBER}"
 ```
 
 After that runs the subsequent steps in your job will have the environment variable ```BUILD_NUMBER``` available. If you prefer to be more explicit you can use the output of the step, like so:
