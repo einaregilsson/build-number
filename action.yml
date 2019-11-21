@@ -8,11 +8,14 @@ inputs:
   token:
     description: 'GitHub Token to create and delete refs (GITHUB_TOKEN)'
     required: false # Not required when getting the stored build number for later jobs, only in the first jobs when it's generated
-    
+  prefix:
+    description: 'Prefix for the build-number-<num> tag to make it unique if tracking multiple build numbers'
+    required: false
+
 outputs:
   build_number:
     description: 'Generated build number'
-  
+
 branding:
-  icon: 'hash'  
+  icon: 'hash'
   color: 'green'
