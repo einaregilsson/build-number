@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Generate build number
-      uses: einaregilsson/build-number@v1 
+      uses: einaregilsson/build-number@v2 
       with:
         token: ${{secrets.github_token}}        
     - name: Print new build number
@@ -24,7 +24,7 @@ jobs:
     steps:
     - name: Generate build number
       id: buildnumber
-      uses: einaregilsson/build-number@v1 
+      uses: einaregilsson/build-number@v2 
       with:
         token: ${{secrets.github_token}}        
     
@@ -47,7 +47,7 @@ jobs:
     steps:
     - name: Generate build number
       id: buildnumber
-      uses: einaregilsson/build-number@v1 
+      uses: einaregilsson/build-number@v2 
       with:
         token: ${{secrets.github_token}}        
     - name: Upload build number
@@ -65,12 +65,23 @@ jobs:
         name: BUILD_NUMBER
     - name: Restore build number
       id: buildnumber
-      uses: einaregilsson/build-number@v1 
+      uses: einaregilsson/build-number@v2 
     
     # Don't need to add Github token here, since you're only getting an artifact.
     # After this runs you'll again have the $BUILD_NUMBER environment variable, and 
     # the ${{ steps.buildnumber.outputs.build_number }} output.
 ```
+
+## Setting the initial build number.
+
+If you're moving from another build system, you might want to start from some specific number. The `build-number` action simply uses a special tag name to store the build number, `build-number-x`, so you can just create and push a tag with the number you want to start on. E.g. do
+
+```
+git tag build-number-500
+git push origin build-number-500
+```
+
+and then your next build number will be 501. The action will always delete older refs that start with `build-number-`, e.g. when it runs and finds `build-number-500` it will create a new tag, `build-number-501` and then delete `build-number-500`.
 
 ## Generating multiple independent build numbers
 
@@ -84,7 +95,7 @@ jobs:
     steps:
     - name: Generate build number
       id: buildnumber
-      uses: einaregilsson/build-number@v1 
+      uses: einaregilsson/build-number@v2 
       with:
         token: ${{ secrets.github_token }}
         prefix: client
@@ -94,19 +105,8 @@ This will generate a git tag like `client-build-number-1`.
 
 If you then do the same in another workflow and use `prefix: server` then you'll get a second build-number tag called `server-build-number-1`.
 
-## Setting the initial build number.
-
-If you're moving from another build system, you might want to start from some specific number. The `build-number` action simply uses a special tag name to store the build number, `build-number-x`, so you can just create and push a tag with the number you want to start on. E.g. do
-
-```
-git tag build-number-500
-git push origin build-number-500
-```
-
-and then your next build number will be 501. The action will always delete older refs that start with `build-number-`, e.g. when it runs and finds `build-number-500` it will create a new tag, `build-number-501` and then delete `build-number-500`.
-
 ## Branches and build numbers
 
-The build number generator is global, there's no concept of special build numbers for special branches, it's probably something you would just use on builds from your master branch. It's just one number that gets increased every time the action is run.
+The build number generator is global, there's no concept of special build numbers for special branches unless handled manually with the `prefix` property. It's probably something you would just use on builds from your master branch. It's just one number that gets increased every time the action is run.
 
 So, that's it. Hope you can use it. You can read more about how it works in this blog post: http://einaregilsson.com/a-github-action-for-generating-sequential-build-numbers/
