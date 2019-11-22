@@ -63,6 +63,8 @@ function request(method, path, data, callback) {
 function main() {
 
     const path = 'BUILD_NUMBER/BUILD_NUMBER';
+    const prefix = env.INPUT_PREFIX ? `${env.INPUT_PREFIX}-` : '';
+
     //See if we've already generated the build number and are in later steps...
     if (fs.existsSync(path)) {
         let buildNumber = fs.readFileSync(path);
@@ -80,7 +82,7 @@ function main() {
         }
     }
 
-    request('GET', `/repos/${env.GITHUB_REPOSITORY}/git/refs/tags/build-number-`, null, (err, status, result) => {
+    request('GET', `/repos/${env.GITHUB_REPOSITORY}/git/refs/tags/${prefix}build-number-`, null, (err, status, result) => {
     
         let nextBuildNumber, nrTags;
     
@@ -89,11 +91,13 @@ function main() {
             nextBuildNumber = 1;
             nrTags = [];
         } else if (status === 200) {
-            nrTags = result.filter(d => d.ref.match(/\/build-number-(\d+)$/));
+            const regexString = `/${prefix}build-number-(\\d+)$`;
+            const regex = new RegExp(regexString);
+            nrTags = result.filter(d => d.ref.match(regex));
             
             const MAX_OLD_NUMBERS = 5; //One or two ref deletes might fail, but if we have lots then there's something wrong!
             if (nrTags.length > MAX_OLD_NUMBERS) {
-                fail(`ERROR: Too many build-number- refs in repository, found ${nrTags.length}, expected only 1. Check your tags!`);
+                fail(`ERROR: Too many ${prefix}build-number- refs in repository, found ${nrTags.length}, expected only 1. Check your tags!`);
             }
             
             //Existing build numbers:
@@ -113,7 +117,7 @@ function main() {
         }
 
         let newRefData = {
-            ref:`refs/tags/build-number-${nextBuildNumber}`, 
+            ref:`refs/tags/${prefix}build-number-${nextBuildNumber}`, 
             sha: env.GITHUB_SHA
         };
     
@@ -143,7 +147,7 @@ function main() {
                         }
                     });
                 }
-                }
+            }
 
         });
     });
