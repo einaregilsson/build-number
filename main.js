@@ -64,13 +64,14 @@ function main() {
 
     const path = 'BUILD_NUMBER/BUILD_NUMBER';
     const prefix = env.INPUT_PREFIX ? `${env.INPUT_PREFIX}-` : '';
+    const output_name = env.INPUT_OUTPUT_NAME ? `${env.INPUT_OUTPUT_NAME}` : 'BUILD_NUMBER'
 
     //See if we've already generated the build number and are in later steps...
     if (fs.existsSync(path)) {
         let buildNumber = fs.readFileSync(path);
         console.log(`Build number already generated in earlier jobs, using build number ${buildNumber}...`);
         //Setting the output and a environment variable to new build number...
-        console.log(`::set-env name=BUILD_NUMBER::${buildNumber}`);
+        console.log(`::set-env name=${output_name}::${buildNumber}`);
         console.log(`::set-output name=build_number::${buildNumber}`);
         return;
     }
@@ -129,7 +130,7 @@ function main() {
             console.log(`Successfully updated build number to ${nextBuildNumber}`);
             
             //Setting the output and a environment variable to new build number...
-            console.log(`::set-env name=BUILD_NUMBER::${nextBuildNumber}`);
+            console.log(`::set-env name=${output_name}::${nextBuildNumber}`);
             console.log(`::set-output name=build_number::${nextBuildNumber}`);
             //Save to file so it can be used for next jobs...
             fs.writeFileSync('BUILD_NUMBER', nextBuildNumber.toString());
