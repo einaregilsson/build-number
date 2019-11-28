@@ -57,6 +57,7 @@ jobs:
         path: BUILD_NUMBER
           
   job2:
+    needs: job1
     runs-on: ubuntu-latest
     steps:
     - name: Download build number
