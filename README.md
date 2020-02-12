@@ -1,3 +1,7 @@
+# Update 2020-02-12
+
+GitHub has just introduced new environment variables, `GITHUB_RUN_ID` and `GITHUB_RUN_NUMBER` which are unique numbers for each workflow run, so you're probably better off using those than this GitHub action. 🙂 See https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables#default-environment-variables
+
 # build-number
 GitHub action for generating sequential build numbers for GitHub actions. The build number is stored in your GitHub repository as a ref, it doesn't add any extra commits to your repository. Use in your workflow like so:
 
