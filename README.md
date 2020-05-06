@@ -42,39 +42,30 @@ The `GITHUB_TOKEN` environment variable is defined by GitHub already for you. Se
 
 ## Getting the build number in other jobs
 
-For other steps in the same job you can use the methods above, to actually get the build number in other jobs you need some extra actions, since jobs are run in a completely clean environment. You need to use the `actions/upload-artifact@v1` action to save the build number as a workflow artifact, then download it at the start of the next job with `actions/download-artifact@v1` and then run the build number job to make it into an environment variable there again.
+For other steps in the same job you can use the methods above,
+to actually get the build number in other jobs you need to use [job outputs](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjobs_idoutputs) mechanism:
 
 ```yaml
 jobs:
   job1:
     runs-on: ubuntu-latest
+    outputs:
+      build_number: ${{ steps.buildnumber.outputs.build_number }}
     steps:
     - name: Generate build number
       id: buildnumber
       uses: einaregilsson/build-number@v2 
       with:
-        token: ${{secrets.github_token}}        
-    - name: Upload build number
-      uses: actions/upload-artifact@v1
-      with:
-        name: BUILD_NUMBER
-        path: BUILD_NUMBER
+        token: ${{secrets.github_token}}
           
   job2:
     needs: job1
     runs-on: ubuntu-latest
     steps:
-    - name: Download build number
-      uses: actions/download-artifact@v1
+    - name: Another step as an example
+      uses: actions/hello-world-docker-action@v1
       with:
-        name: BUILD_NUMBER
-    - name: Restore build number
-      id: buildnumber
-      uses: einaregilsson/build-number@v2 
-    
-    # Don't need to add Github token here, since you're only getting an artifact.
-    # After this runs you'll again have the $BUILD_NUMBER environment variable, and 
-    # the ${{ steps.buildnumber.outputs.build_number }} output.
+        who-to-greet: ${{needs.job1.outputs.build_number}}
 ```
 
 ## Setting the initial build number.
