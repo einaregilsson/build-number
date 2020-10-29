@@ -4,6 +4,8 @@ const   https = require('https'),
         fs = require('fs'),
         env = process.env;
 
+const { exec } = require("child_process");
+
 function fail(message, exitCode=1) {
     console.log(`::error::${message}`);
     process.exit(1);
@@ -70,7 +72,7 @@ function main() {
         let buildNumber = fs.readFileSync(path);
         console.log(`Build number already generated in earlier jobs, using build number ${buildNumber}...`);
         //Setting the output and a environment variable to new build number...
-        console.log(`::set-env name=BUILD_NUMBER::${buildNumber}`);
+        exec(`BUILD_NUMBER=${nextBuildNumber} >> $GITHUB_ENV`);
         console.log(`::set-output name=build_number::${buildNumber}`);
         return;
     }
@@ -129,7 +131,7 @@ function main() {
             console.log(`Successfully updated build number to ${nextBuildNumber}`);
             
             //Setting the output and a environment variable to new build number...
-            console.log(`::set-env name=BUILD_NUMBER::${nextBuildNumber}`);
+            exec(`BUILD_NUMBER=${nextBuildNumber} >> $GITHUB_ENV`);
             console.log(`::set-output name=build_number::${nextBuildNumber}`);
             //Save to file so it can be used for next jobs...
             fs.writeFileSync('BUILD_NUMBER', nextBuildNumber.toString());
