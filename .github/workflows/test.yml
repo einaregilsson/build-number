@@ -15,7 +15,7 @@ jobs:
       with:
         token: ${{secrets.github_token}}
     - name: Echo Build number env
-      run: echo "Build number env variable is $BUILD_NUMBER"
+      run: echo "Build number env variable is ${{env.BUILD_NUMBER}}"
           
   job2:
     needs: job1
