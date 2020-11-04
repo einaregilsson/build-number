@@ -14,8 +14,8 @@ jobs:
       uses: einaregilsson/build-number@master
       with:
         token: ${{secrets.github_token}}
-    - name: Echo Build number env
-      run: echo "Build number env variable is ${{env.BUILD_NUMBER}}"
+    - name: Print ENV
+      uses: einaregilsson/print-environment@master
           
   job2:
     needs: job1
