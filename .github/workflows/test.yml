@@ -25,3 +25,5 @@ jobs:
       uses: actions/hello-world-docker-action@v1
       with:
         who-to-greet: ${{needs.job1.outputs.build_number}}
+    - name: Print ENV
+      uses: einaregilsson/print-environment@master
