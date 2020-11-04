@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Generate build number
-      uses: einaregilsson/build-number@v2 
+      uses: einaregilsson/build-number@v3
       with:
         token: ${{secrets.github_token}}        
     - name: Print new build number
@@ -28,7 +28,7 @@ jobs:
     steps:
     - name: Generate build number
       id: buildnumber
-      uses: einaregilsson/build-number@v2 
+      uses: einaregilsson/build-number@v3 
       with:
         token: ${{secrets.github_token}}        
     
@@ -54,7 +54,7 @@ jobs:
     steps:
     - name: Generate build number
       id: buildnumber
-      uses: einaregilsson/build-number@v2 
+      uses: einaregilsson/build-number@v3 
       with:
         token: ${{secrets.github_token}}
           
@@ -91,7 +91,7 @@ jobs:
     steps:
     - name: Generate build number
       id: buildnumber
-      uses: einaregilsson/build-number@v2 
+      uses: einaregilsson/build-number@v3 
       with:
         token: ${{ secrets.github_token }}
         prefix: client
