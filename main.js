@@ -15,11 +15,16 @@ function request(method, path, data, callback) {
         if (data) {
             data = JSON.stringify(data);
         }
-        const apiServer = env.GITHUB_API_URL.replace(/(^\w+:|^)\/\//, '')
+        const urlWithoutProtocol = env.GITHUB_API_URL.replace(/(^\w+:|^)\/\//, '');
+        const hostname = urlWithoutProtocol.split("/")[0];
+        let prePath = urlWithoutProtocol.split("/").slice(1).filter(n => n).join("/");
+        if (prePath.length > 0) {
+          prePath = "/" + prePath;
+        }
         const options = {
-            hostname: apiServer,
+            hostname: hostname,
             port: 443,
-            path,
+            path: prePath + path,
             method,
             headers: {
                 'Content-Type': 'application/json',
