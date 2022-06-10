@@ -101,7 +101,7 @@ function main() {
             const regex = new RegExp(regexString);
             nrTags = result.filter(d => d.ref.match(regex));
 
-            const MAX_OLD_NUMBERS = 5; //One or two ref deletes might fail, but if we have lots then there's something wrong!
+            const MAX_OLD_NUMBERS = 30; //One or two ref deletes might fail, but if we have lots then there's something wrong!
             if (nrTags.length > MAX_OLD_NUMBERS) {
                 fail(`ERROR: Too many ${prefix}build-number- refs in repository, found ${nrTags.length}, expected only 1. Check your tags!`);
             }
