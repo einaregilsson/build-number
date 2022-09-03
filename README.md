@@ -1,3 +1,9 @@
+# Get Build Number
+
+This is a modified copy of the build-number action to serve a specific purpose to get build numbers in other workflows in the same repository without incremenenting the value like would be done with the GITHUB_RUN_ID or GITHUB_RUN_NUMBER - I wanted to include the same number across multiple independent workflows in all branches.
+
+This code is a straight copy of that, but with the increment removed.
+
 # Update 2020-02-12
 
 GitHub has just introduced new environment variables, `GITHUB_RUN_ID` and `GITHUB_RUN_NUMBER` which are unique numbers for each workflow run, so you're probably better off using those than this GitHub action. 🙂 See https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables#default-environment-variables
