@@ -106,8 +106,6 @@ function main() {
             let currentBuildNumber = Math.max(...nrs);
             console.log(`Last build nr was ${currentBuildNumber}.`);
     
-            nextBuildNumber = currentBuildNumber + 1;
-            console.log(`Updating build counter to ${nextBuildNumber}...`);
         } else {
             if (err) {
                 fail(`Failed to get refs. Error: ${err}, status: ${status}`);
@@ -115,43 +113,15 @@ function main() {
                 fail(`Getting build-number refs failed with http status ${status}, error: ${JSON.stringify(result)}`);
             } 
         }
+   
+        //Setting the output and a environment variable to current build number...
+        //fs.writeFileSync('$GITHUB_ENV', `BUILD_NUMBER=${nextBuildNumber}`);
+        fs.writeFileSync(process.env.GITHUB_ENV, `BUILD_NUMBER=${currentBuildNumber}`);
 
-        let newRefData = {
-            ref:`refs/tags/${prefix}build-number-${nextBuildNumber}`, 
-            sha: env.GITHUB_SHA
-        };
-    
-        request('POST', `/repos/${env.GITHUB_REPOSITORY}/git/refs`, newRefData, (err, status, result) => {
-            if (status !== 201 || err) {
-                fail(`Failed to create new build-number ref. Status: ${status}, err: ${err}, result: ${JSON.stringify(result)}`);
-            }
-
-            console.log(`Successfully updated build number to ${nextBuildNumber}`);
+        console.log(`::set-output name=build_number::${currentBuildNumber}`);
+        //Save to file so it can be used for next jobs...
+        fs.writeFileSync('BUILD_NUMBER', currentBuildNumber.toString());
             
-            //Setting the output and a environment variable to new build number...
-            //fs.writeFileSync('$GITHUB_ENV', `BUILD_NUMBER=${nextBuildNumber}`);
-            fs.writeFileSync(process.env.GITHUB_ENV, `BUILD_NUMBER=${nextBuildNumber}`);
- 
-            console.log(`::set-output name=build_number::${nextBuildNumber}`);
-            //Save to file so it can be used for next jobs...
-            fs.writeFileSync('BUILD_NUMBER', nextBuildNumber.toString());
-            
-            //Cleanup
-            if (nrTags) {
-                console.log(`Deleting ${nrTags.length} older build counters...`);
-            
-                for (let nrTag of nrTags) {
-                    request('DELETE', `/repos/${env.GITHUB_REPOSITORY}/git/${nrTag.ref}`, null, (err, status, result) => {
-                        if (status !== 204 || err) {
-                            console.warn(`Failed to delete ref ${nrTag.ref}, status: ${status}, err: ${err}, result: ${JSON.stringify(result)}`);
-                        } else {
-                            console.log(`Deleted ${nrTag.ref}`);
-                        }
-                    });
-                }
-            }
-
-        });
     });
 }
 

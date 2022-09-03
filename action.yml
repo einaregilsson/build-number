@@ -1,5 +1,5 @@
-name: 'Build Number Generator'
-description: 'Generate sequential build numbers for workflow runs'
+name: 'Get Build Number from Tag'
+description: 'Grab build number tag in a workflow runs, forked off Einar Egilsson build-number action'
 author: 'Einar Egilsson'
 runs:
   using: 'node12'
@@ -14,7 +14,7 @@ inputs:
 
 outputs:
   build_number:
-    description: 'Generated build number'
+    description: 'Found build number'
 
 branding:
   icon: 'hash'
