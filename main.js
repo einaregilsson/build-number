@@ -84,11 +84,11 @@ function main() {
 
     request('GET', `/repos/${env.GITHUB_REPOSITORY}/git/refs/tags/${prefix}build-number-`, null, (err, status, result) => {
     
-        let nextBuildNumber, nrTags;
+        let currentBuildNumber, nrTags;
     
         if (status === 404) {
             console.log('No build-number ref available, starting at 1.');
-            nextBuildNumber = 1;
+            fail(`ERROR: No build-number- refs in repository, Check your tags!`);
             nrTags = [];
         } else if (status === 200) {
             const regexString = `/${prefix}build-number-(\\d+)$`;
@@ -103,7 +103,7 @@ function main() {
             //Existing build numbers:
             let nrs = nrTags.map(t => parseInt(t.ref.match(/-(\d+)$/)[1]));
     
-            let currentBuildNumber = Math.max(...nrs);
+            currentBuildNumber = Math.max(...nrs);
             console.log(`Last build nr was ${currentBuildNumber}.`);
     
         } else {
