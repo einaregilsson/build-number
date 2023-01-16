@@ -1,4 +1,14 @@
-# Update 2020-02-12
+# NOTICE: This action is no longer being maintained
+
+Due the maintainer passing away, this action is no longer being maintained as of Janyary 2023.
+
+Development has moved to [onyxmueller/build-tag-number](https://github.com/onyxmueller/build-tag-number) and the action is available on the Marketplace here: <https://github.com/marketplace/actions/build-tag-number>
+
+Updating your existing Github Actions workflows should be as simple as replacing `einaregilsson/build-number@v3` with `onyxmueller/build-tag-number@v1`
+
+See the repo linked above for more information.
+
+## Update 2020-02-12
 
 GitHub has just introduced new environment variables, `GITHUB_RUN_ID` and `GITHUB_RUN_NUMBER` which are unique numbers for each workflow run, so you're probably better off using those than this GitHub action. 🙂 See https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables#default-environment-variables
 
